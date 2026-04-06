@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>出稿業務の基礎 - 新入社員オンボーディング講義</title>
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --accent: #e94560;
+    --accent-light: #ff6b81;
+    --bg: #0f0f1a;
+    --card: #16213e;
+    --card-light: #1a2744;
+    --text: #eee;
+    --text-muted: #8892a4;
+    --green: #00d2a0;
+    --yellow: #ffc857;
+    --blue: #4da8da;
+    --red: #e94560;
+    --orange: #ff8c42;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Helvetica Neue', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 16px;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(233,69,96,0.15) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    border-radius: 50%;
+  }
+  .hero-label {
+    font-size: 0.9rem;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, #e94560 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 600px;
+  }
+  .hero-meta {
+    margin-top: 2rem;
+    display: flex;
+    gap: 2rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  /* Navigation */
+  .toc {
+    background: var(--card);
+    padding: 3rem 2rem;
+    max-width: 900px;
+    margin: -4rem auto 0;
+    border-radius: 16px;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .toc h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.8rem;
+  }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1rem;
+    background: var(--card-light);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .toc-item:hover { background: #223050; transform: translateX(4px); }
+  .toc-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(233,69,96,0.15);
+    border-radius: 6px;
+  }
+  .toc-label { font-size: 0.95rem; }
+  .toc-time { font-size: 0.8rem; color: var(--text-muted); margin-left: auto; }
+
+  /* Sections */
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .section-header h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .section-header .goal {
+    font-size: 1rem;
+    color: var(--text-muted);
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--yellow);
+  }
+  .card h4 {
+    font-size: 1rem;
+    margin: 1.5rem 0 0.8rem;
+    color: var(--blue);
+  }
+  .card p {
+    margin-bottom: 0.8rem;
+  }
+
+  /* Diagram: Flow */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+  }
+  .flow-step {
+    background: var(--card-light);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-width: 100px;
+  }
+  .flow-step.highlight {
+    border-color: var(--accent);
+    background: rgba(233,69,96,0.15);
+    color: var(--accent-light);
+  }
+  .flow-step.green-highlight {
+    border-color: var(--green);
+    background: rgba(0,210,160,0.1);
+    color: var(--green);
+  }
+  .flow-arrow {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+  }
+  .flow-step small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* Comparison Table */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .compare-card {
+    background: var(--card-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .compare-card.danger { border-color: rgba(233,69,96,0.3); }
+  .compare-card.success { border-color: rgba(0,210,160,0.3); }
+  .compare-card h4 {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+  }
+  .compare-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .compare-card li {
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .compare-card li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  th, td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  th {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Hierarchy Diagram */
+  .hierarchy {
+    margin: 1.5rem 0;
+    padding: 2rem;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+  }
+  .h-level {
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+  .h-level-1 {
+    background: rgba(233,69,96,0.15);
+    border: 1px solid rgba(233,69,96,0.3);
+  }
+  .h-level-2 {
+    background: rgba(77,168,218,0.12);
+    border: 1px solid rgba(77,168,218,0.3);
+    margin-left: 2rem;
+  }
+  .h-level-3 {
+    background: rgba(0,210,160,0.1);
+    border: 1px solid rgba(0,210,160,0.3);
+    margin-left: 4rem;
+  }
+  .h-level-name {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .h-level-1 .h-level-name { color: var(--accent-light); }
+  .h-level-2 .h-level-name { color: var(--blue); }
+  .h-level-3 .h-level-name { color: var(--green); }
+  .h-level-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+  .h-connector {
+    width: 2px;
+    height: 20px;
+    background: rgba(255,255,255,0.1);
+    margin-left: 2.5rem;
+  }
+  .h-connector-2 {
+    margin-left: 4.5rem;
+  }
+
+  /* Pattern Diagram */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .pattern-card {
+    background: var(--card-light);
+    border-radius: 10px;
+    padding: 1.2rem;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .pattern-card .pattern-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: 'Courier New', monospace;
+    margin-bottom: 0.5rem;
+  }
+  .pattern-card .pattern-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* Tree Diagram */
+  .tree {
+    padding: 1.5rem;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 2;
+  }
+  .tree .cp { color: var(--accent-light); }
+  .tree .adset { color: var(--blue); }
+  .tree .ad { color: var(--green); }
+  .tree .muted { color: var(--text-muted); }
+
+  /* Code Block */
+  .code-block {
+    background: #0a0a14;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    line-height: 1.8;
+  }
+  .code-old { color: var(--text-muted); }
+  .code-hl { color: var(--accent-light); font-weight: 700; }
+  .code-new { color: var(--green); font-weight: 700; }
+
+  /* Callout */
+  .callout {
+    background: rgba(233,69,96,0.1);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.5rem;
+    border-radius: 0 10px 10px 0;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+  .callout.green {
+    background: rgba(0,210,160,0.08);
+    border-color: var(--green);
+  }
+  .callout.blue {
+    background: rgba(77,168,218,0.08);
+    border-color: var(--blue);
+  }
+  .callout.yellow {
+    background: rgba(255,200,87,0.08);
+    border-color: var(--yellow);
+  }
+  .callout strong {
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Metric Badge */
+  .metric-flow {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 1.5rem 0;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  .metric-step {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 1rem 0.5rem;
+    position: relative;
+  }
+  .metric-step-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .metric-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .metric-badge.ctr { background: rgba(233,69,96,0.2); color: var(--accent-light); }
+  .metric-badge.mcvr { background: rgba(77,168,218,0.2); color: var(--blue); }
+  .metric-badge.cvr { background: rgba(0,210,160,0.2); color: var(--green); }
+  .metric-connector {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    padding: 0 0.2rem;
+  }
+
+  /* Cycle Diagram */
+  .cycle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin: 1.5rem 0;
+    padding: 2rem 1.5rem;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+  }
+  .cycle-step {
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  .cycle-step.dim { background: var(--card-light); color: var(--text-muted); }
+  .cycle-step.active {
+    background: rgba(233,69,96,0.2);
+    border: 1px solid rgba(233,69,96,0.4);
+    color: var(--accent-light);
+  }
+  .cycle-arrow { color: var(--text-muted); font-size: 1rem; }
+  .cycle-return {
+    width: 100%;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Org Chart */
+  .org {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+  }
+  .org-box {
+    background: var(--card-light);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+  .org-box .org-name { font-weight: 700; margin-bottom: 0.3rem; }
+  .org-box .org-detail { color: var(--text-muted); font-size: 0.75rem; }
+  .org-box.you { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+
+  /* Steps */
+  .steps {
+    counter-reset: step;
+    margin: 1.5rem 0;
+  }
+  .step {
+    counter-increment: step;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding: 1rem 1.2rem;
+    background: var(--card-light);
+    border-radius: 10px;
+  }
+  .step::before {
+    content: counter(step);
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(233,69,96,0.15);
+    color: var(--accent);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 700; font-size: 0.95rem; }
+  .step-desc { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* Key Points */
+  .key-points {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .key-point {
+    background: var(--card-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--accent);
+  }
+  .key-point.green-border { border-color: var(--green); }
+  .key-point.blue-border { border-color: var(--blue); }
+  .key-point h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .key-point p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* Quiz */
+  .quiz-card {
+    background: var(--card);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .quiz-q {
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  .quiz-q:hover { background: var(--card-light); }
+  .quiz-num {
+    font-weight: 800;
+    color: var(--accent);
+    margin-right: 1rem;
+    font-size: 1.1rem;
+  }
+  .quiz-text { flex: 1; font-weight: 600; }
+  .quiz-toggle {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    background: rgba(255,255,255,0.05);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .quiz-a {
+    display: none;
+    padding: 1.5rem 2rem;
+    background: rgba(0,210,160,0.05);
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .quiz-a.show { display: block; }
+  .quiz-answer {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--green);
+    margin-bottom: 0.5rem;
+  }
+  .quiz-explain {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+  .quiz-formula {
+    font-family: 'Courier New', monospace;
+    background: rgba(0,0,0,0.3);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    margin: 0.8rem 0;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+
+  /* Quiz Compare Table */
+  .quiz-compare {
+    margin: 1rem 0;
+    width: 100%;
+  }
+  .quiz-compare th {
+    font-size: 0.8rem;
+  }
+  .quiz-compare td {
+    font-size: 0.9rem;
+  }
+  .quiz-compare .winner { color: var(--green); font-weight: 700; }
+  .quiz-compare .loser { color: var(--text-muted); }
+
+  /* Glossary */
+  .glossary-category {
+    margin-bottom: 2rem;
+  }
+  .glossary-category h3 {
+    font-size: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(233,69,96,0.2);
+  }
+  .glossary-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: 0.9rem;
+  }
+  .glossary-term {
+    min-width: 140px;
+    font-weight: 700;
+    color: var(--yellow);
+    font-size: 0.85rem;
+  }
+  .glossary-def {
+    color: var(--text-muted);
+  }
+
+  /* Takeaway */
+  .takeaway {
+    background: linear-gradient(135deg, rgba(233,69,96,0.1) 0%, rgba(77,168,218,0.1) 100%);
+    border: 1px solid rgba(233,69,96,0.2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+  }
+  .takeaway h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .takeaway-list {
+    list-style: none;
+    counter-reset: takeaway;
+  }
+  .takeaway-list li {
+    counter-increment: takeaway;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem;
+  }
+  .takeaway-list li::before {
+    content: counter(takeaway);
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(233,69,96,0.3) 50%, transparent 100%);
+    margin: 1rem 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2.2rem; }
+    .compare { grid-template-columns: 1fr; }
+    .org { grid-template-columns: repeat(2, 1fr); }
+    .pattern-grid { grid-template-columns: repeat(2, 1fr); }
+    section { padding: 3rem 1.2rem; }
+    .h-level-2 { margin-left: 1rem; }
+    .h-level-3 { margin-left: 2rem; }
+    .h-connector { margin-left: 1.5rem; }
+    .h-connector-2 { margin-left: 2.5rem; }
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<div class="hero">
+  <div class="hero-label">New Employee Onboarding</div>
+  <h1>出稿業務の基礎</h1>
+  <p>前提知識ゼロから「出稿」という業務を理解し、<br>自分の手で広告を配信できるようになるための講義</p>
+  <div class="hero-meta">
+    <span>40分講義 + 20分 Q&A</span>
+    <span>2026年4月</span>
+  </div>
+</div>
+
+<!-- ==================== TOC ==================== -->
+<div class="toc">
+  <h2>目次</h2>
+  <div class="toc-grid">
+    <a href="#part1" class="toc-item">
+      <span class="toc-num">01</span>
+      <span class="toc-label">アドアフィとは</span>
+      <span class="toc-time">6min</span>
+    </a>
+    <a href="#part2" class="toc-item">
+      <span class="toc-num">02</span>
+      <span class="toc-label">売上が生まれるまでの導線</span>
+      <span class="toc-time">5min</span>
+    </a>
+    <a href="#part3" class="toc-item">
+      <span class="toc-num">03</span>
+      <span class="toc-label">運用者のワークフロー</span>
+      <span class="toc-time">6min</span>
+    </a>
+    <a href="#part4" class="toc-item">
+      <span class="toc-num">04</span>
+      <span class="toc-label">出稿とは何か</span>
+      <span class="toc-time">8min</span>
+    </a>
+    <a href="#part5" class="toc-item">
+      <span class="toc-num">05</span>
+      <span class="toc-label">最初の出稿でやること</span>
+      <span class="toc-time">6min</span>
+    </a>
+    <a href="#part6" class="toc-item">
+      <span class="toc-num">06</span>
+      <span class="toc-label">トッププレイヤーの共通点</span>
+      <span class="toc-time">7min</span>
+    </a>
+    <a href="#part7" class="toc-item">
+      <span class="toc-num">07</span>
+      <span class="toc-label">まとめ</span>
+      <span class="toc-time">2min</span>
+    </a>
+    <a href="#quiz" class="toc-item">
+      <span class="toc-num">+</span>
+      <span class="toc-label">CPA計算問題</span>
+      <span class="toc-time">おまけ</span>
+    </a>
+    <a href="#glossary" class="toc-item">
+      <span class="toc-num">+</span>
+      <span class="toc-label">社内共通言語 単語一覧</span>
+      <span class="toc-time">おまけ</span>
+    </a>
+  </div>
+</div>
+
+<!-- ==================== PART 1 ==================== -->
+<section id="part1">
+  <div class="section-header">
+    <div class="section-num">Part 01 / 6min</div>
+    <h2>アドアフィとは</h2>
+    <p class="goal">自分たちのビジネスモデルを一言で説明できるようになる</p>
+  </div>
+
+  <div class="card">
+    <h3>アドアフィリエイト = 自腹で広告を出して、成果報酬との差分で稼ぐ</h3>
+    <p>広告費を自社で負担し、ユーザーがコンバージョン（予約完了など）した時に発生する成果報酬から広告費を引いた差分が利益になる。</p>
+
+    <div class="callout yellow">
+      <strong>利益の公式</strong>
+      利益 = 成果報酬（単価） - 広告費（CPA）
+    </div>
+
+    <div class="compare">
+      <div class="compare-card">
+        <h4>例1：黒字</h4>
+        <ul>
+          <li>単価 20,000円</li>
+          <li>CPA 10,000円</li>
+          <li style="color: var(--green); font-weight: 700;">利益 +10,000円</li>
+        </ul>
+      </div>
+      <div class="compare-card danger">
+        <h4>例2：赤字</h4>
+        <ul>
+          <li>単価 20,000円</li>
+          <li>CPA 25,000円</li>
+          <li style="color: var(--red); font-weight: 700;">損失 -5,000円</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>登場人物</h3>
+    <div class="flow">
+      <div class="flow-step">クライアント<small>広告主</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">ASP<small>仲介</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step highlight">AXIS-Ads<small>代理店（自分たち）</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">媒体<small>Meta / TikTok 等</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">ユーザー<small>広告を見る人</small></div>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted);">クライアントが成果報酬と成果地点を設定し、ASPが代理店に案件を下ろす。AXISが自社の広告費でユーザーを集客し、成果を獲得する。</p>
+  </div>
+
+  <div class="card">
+    <h3>予算運用 vs アドアフィ</h3>
+    <table>
+      <thead>
+        <tr><th></th><th>予算運用（一般的な代理店）</th><th>アドアフィ（AXIS）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-weight:600;">広告費</td><td>クライアントの予算</td><td style="color:var(--accent-light);">自社負担</td></tr>
+        <tr><td style="font-weight:600;">収益モデル</td><td>広告費の20%が手数料</td><td style="color:var(--accent-light);">成果報酬 - 広告費 = 利益</td></tr>
+        <tr><td style="font-weight:600;">結果が出ない時</td><td>手数料は入る</td><td style="color:var(--red);">赤字</td></tr>
+        <tr><td style="font-weight:600;">インセンティブ</td><td>広告費を増やしたい</td><td style="color:var(--green);">利益を最大化したい</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>AXIS-Adsの特徴</h3>
+    <table>
+      <tbody>
+        <tr><td style="font-weight:600;">案件タイプ</td><td>リード獲得（店舗型が大半）</td></tr>
+        <tr><td style="font-weight:600;">主要クライアント</td><td>クリニック系（美容整形、医療痩身、医療脱毛等）、TCBが主力</td></tr>
+        <tr><td style="font-weight:600;">主要媒体</td><td>Meta / TikTok / Google(YT) / X / LINE</td></tr>
+        <tr><td style="font-weight:600;">成果地点</td><td>予約完了</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ==================== PART 2 ==================== -->
+<section id="part2">
+  <div class="section-header">
+    <div class="section-num">Part 02 / 5min</div>
+    <h2>売上が生まれるまでの導線</h2>
+    <p class="goal">ユーザーがCVするまでの流れを頭に描けるようになる</p>
+  </div>
+
+  <div class="card">
+    <h3>ユーザー導線</h3>
+    <div class="flow">
+      <div class="flow-step highlight">広告（CR）<small>スクロールを止める</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">記事LP<small>商品の魅力を教育</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">本LP<small>クライアントの公式ページ</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">フォーム<small>個人情報入力</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step green-highlight">サンクスページ<small>= CV発生 = 売上</small></div>
+    </div>
+
+    <table>
+      <thead><tr><th>ステップ</th><th>役割</th><th>誰が作る</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600; color:var(--accent-light);">広告（CR）</td><td>SNSのフィードでスクロールを止めて、クリックさせる</td><td>運用者（自分たち）</td></tr>
+        <tr><td style="font-weight:600;">記事LP</td><td>商品の魅力を「記事風」に伝えて教育する</td><td>自社（ライティング部）</td></tr>
+        <tr><td style="font-weight:600;">本LP</td><td>公式ページ。申込フォームへ誘導</td><td>クライアント</td></tr>
+        <tr><td style="font-weight:600; color:var(--green);">サンクスページ</td><td>予約完了 = ここで初めてCVが発生</td><td>クライアント</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <strong>なぜCRが最重要か</strong>
+    どんなに記事やLPが良くても、CRでユーザーの手が止まらなければ後ろに到達しない。<br>入り口が全て。
+  </div>
+
+  <div class="card">
+    <h3>導線と指標の対応</h3>
+    <div class="metric-flow">
+      <div class="metric-step">
+        <div class="metric-step-name" style="color: var(--accent-light);">広告（CR）</div>
+      </div>
+      <div class="metric-connector">
+        <div style="text-align:center;">
+          &rarr;<br>
+          <span class="metric-badge ctr">CTR</span>
+        </div>
+      </div>
+      <div class="metric-step">
+        <div class="metric-step-name">記事LP</div>
+      </div>
+      <div class="metric-connector">
+        <div style="text-align:center;">
+          &rarr;<br>
+          <span class="metric-badge mcvr">MCVR</span>
+        </div>
+      </div>
+      <div class="metric-step">
+        <div class="metric-step-name">本LP</div>
+      </div>
+      <div class="metric-connector">
+        <div style="text-align:center;">
+          &rarr;<br>
+          <span class="metric-badge cvr">CVR</span>
+        </div>
+      </div>
+      <div class="metric-step">
+        <div class="metric-step-name" style="color: var(--green);">CV</div>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>指標</th><th>意味</th><th>何がわかるか</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600; color:var(--accent-light);">CTR</td><td>クリック率</td><td>CRの訴求力</td></tr>
+        <tr><td style="font-weight:600; color:var(--blue);">MCVR</td><td>記事→LP遷移率</td><td>記事の教育力</td></tr>
+        <tr><td style="font-weight:600; color:var(--green);">CVR</td><td>LP→CV転換率</td><td>LPの説得力</td></tr>
+        <tr><td style="font-weight:600;">CPA</td><td>1件あたりの獲得費用</td><td>全体の効率</td></tr>
+        <tr><td style="font-weight:600;">ROAS</td><td>広告費に対する売上</td><td>収益性</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ==================== PART 3 ==================== -->
+<section id="part3">
+  <div class="section-header">
+    <div class="section-num">Part 03 / 6min</div>
+    <h2>運用者のワークフロー</h2>
+    <p class="goal">日常業務のサイクルと、出稿がどこに位置するかを理解する</p>
+  </div>
+
+  <div class="card">
+    <h3>業務サイクル</h3>
+    <div class="cycle">
+      <div class="cycle-step dim">案件選定</div>
+      <div class="cycle-arrow">&rarr;</div>
+      <div class="cycle-step dim">制作</div>
+      <div class="cycle-arrow">&rarr;</div>
+      <div class="cycle-step active">出稿</div>
+      <div class="cycle-arrow">&rarr;</div>
+      <div class="cycle-step dim">運用</div>
+      <div class="cycle-arrow">&rarr;</div>
+      <div class="cycle-step dim">分析</div>
+      <div class="cycle-arrow">&rarr;</div>
+      <div class="cycle-step dim" style="font-size: 0.8rem;">制作に戻る</div>
+    </div>
+
+    <table>
+      <thead><tr><th>ステップ</th><th>担当</th><th>やること</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600;">案件選定</td><td>上長陣（勘太、木口）</td><td>ASP/クライアントから案件を引っ張ってくる</td></tr>
+        <tr><td style="font-weight:600; color:var(--yellow);">制作</td><td>運用者（自分たち）</td><td>CR制作（動画・静止画）。運用者の本丸</td></tr>
+        <tr><td style="font-weight:600; color:var(--accent-light);">出稿</td><td>運用者 / 出稿チーム</td><td>作ったCRを媒体に設定して配信開始</td></tr>
+        <tr><td style="font-weight:600;">運用</td><td>運用者</td><td>毎朝の精査。良いものは継続、悪いものは停止</td></tr>
+        <tr><td style="font-weight:600;">分析</td><td>運用者</td><td>データを見て次の仮説を立てる → また制作</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>「出稿」の位置づけ</h3>
+    <div class="callout">
+      <strong>制作と運用をつなぐハブ</strong>
+      出稿の設定が間違っていたら、どんなに良いCRも無駄になる。
+    </div>
+    <p>通常は出稿チーム（アルバイト）に依頼するフローがあるが、<strong>まずは自分で全部やる</strong>。自分でやらないと媒体の構造が理解できない。</p>
+  </div>
+
+  <div class="card">
+    <h3>広告本部の組織構造</h3>
+    <div class="org">
+      <div class="org-box">
+        <div class="org-name">第1事業部</div>
+        <div class="org-detail">動画CRメイン</div>
+      </div>
+      <div class="org-box">
+        <div class="org-name">第2事業部</div>
+        <div class="org-detail">静止画CRメイン</div>
+      </div>
+      <div class="org-box">
+        <div class="org-name">ライティング部</div>
+        <div class="org-detail">記事LP制作</div>
+      </div>
+      <div class="org-box you">
+        <div class="org-name">アド管理部</div>
+        <div class="org-detail">出稿・つなぎこみ・数字合わせ</div>
+      </div>
+    </div>
+    <p style="font-size:0.85rem; color:var(--text-muted);">運用者は第1or第2事業部に所属。アド管理部が出稿や計測周りのサポートを担う。</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ==================== PART 4 ==================== -->
+<section id="part4">
+  <div class="section-header">
+    <div class="section-num">Part 04 / 8min</div>
+    <h2>出稿とは何か</h2>
+    <p class="goal">キャンペーン構造とCV計測の2方式を理解する</p>
+  </div>
+
+  <div class="callout blue">
+    <strong>出稿 = 媒体の管理画面上で、どんな広告を・誰に・いくらで配信するかを設定する業務</strong>
+  </div>
+
+  <div class="card">
+    <h3>3階層構造</h3>
+    <p>広告配信は3つの階層で構成される。全部揃って初めて配信される（基本は翌日0時から）。</p>
+    <div class="hierarchy">
+      <div class="h-level h-level-1">
+        <div class="h-level-name">キャンペーン</div>
+        <div class="h-level-desc">箱を作る・予算を決める ─ キャンペーン名、1日の予算上限、目的（CV最適化等）</div>
+      </div>
+      <div class="h-connector"></div>
+      <div class="h-level h-level-2">
+        <div class="h-level-name">広告セット</div>
+        <div class="h-level-desc">誰に届けるか ─ 年齢、性別、地域、ピクセル設定、配信スケジュール</div>
+      </div>
+      <div class="h-connector h-connector-2"></div>
+      <div class="h-level h-level-3">
+        <div class="h-level-name">広告</div>
+        <div class="h-level-desc">何を届けるか ─ クリエイティブ素材、テキスト、遷移先URL（記事リンク）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>キャンペーン構造の型</h3>
+    <p>表記：<strong>キャンペーン数 - 広告セット数 - 広告数</strong>。依頼時に「1-1-Nで」のように指示されるので、この読み方を覚える。</p>
+
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <div class="pattern-name">1-1-1</div>
+        <div class="pattern-desc">最小構成<br>単体テスト</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-name">1-1-N</div>
+        <div class="pattern-desc">同じターゲットで<br>CR比較</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-name">1-N-1</div>
+        <div class="pattern-desc">同じCRで<br>ターゲット比較</div>
+      </div>
+      <div class="pattern-card">
+        <div class="pattern-name">1-N-N</div>
+        <div class="pattern-desc">ターゲット×CR<br>の組み合わせ</div>
+      </div>
+    </div>
+
+    <h4>1-1-N の例</h4>
+    <div class="tree">
+      <span class="cp">キャンペーン</span><br>
+      <span class="muted">└── </span><span class="adset">広告セット（25-34歳・女性・関東）</span><br>
+      <span class="muted">&nbsp;&nbsp;&nbsp;&nbsp;├── </span><span class="ad">広告A</span><br>
+      <span class="muted">&nbsp;&nbsp;&nbsp;&nbsp;├── </span><span class="ad">広告B</span><br>
+      <span class="muted">&nbsp;&nbsp;&nbsp;&nbsp;└── </span><span class="ad">広告C</span>
+    </div>
+
+    <h4>1-N-1 の例</h4>
+    <div class="tree">
+      <span class="cp">キャンペーン</span><br>
+      <span class="muted">├── </span><span class="adset">広告セット①（18-24歳）</span><br>
+      <span class="muted">│&nbsp;&nbsp;&nbsp;└── </span><span class="ad">広告A</span><br>
+      <span class="muted">├── </span><span class="adset">広告セット②（25-34歳）</span><br>
+      <span class="muted">│&nbsp;&nbsp;&nbsp;└── </span><span class="ad">広告A</span><br>
+      <span class="muted">└── </span><span class="adset">広告セット③（35-44歳）</span><br>
+      <span class="muted">&nbsp;&nbsp;&nbsp;&nbsp;└── </span><span class="ad">広告A</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>CV計測の2つの仕組み</h3>
+    <p>出稿した広告の成果（CV）がどう計測されるか。現在、2つの方式が混在している。</p>
+
+    <div class="compare">
+      <div class="compare-card">
+        <h4 style="color: var(--text-muted);">旧方式（ASPリンク）</h4>
+        <ul>
+          <li>ASPが発行するアフィリンクを使う</li>
+          <li>キャンペーンごとにリンクを分ける（1CP = 1リンク）</li>
+          <li>CP名の一部で成果を突き合わせる</li>
+          <li>リンクを分けないとどのCPのCVか特定できない</li>
+        </ul>
+      </div>
+      <div class="compare-card success">
+        <h4 style="color: var(--green);">新方式（CATS）</h4>
+        <ul>
+          <li>第三者計測ツール「CATS」を使う</li>
+          <li>媒体が発行するCPID/ADIDでCVを紐づけ</li>
+          <li>同じ案件なら1つの記事URLで全CP運用可能</li>
+          <li>リンク管理の工数が大幅に減る</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4>見分け方：キャンペーン名の「AXAD」</h4>
+    <div class="code-block">
+      <span class="code-old">旧: TM2-1_白井_エミナル_A地域直LP_TikTok_</span><span class="code-hl">AX049</span><span class="code-old">_0117_記事013_...</span><br>
+      <span style="color: var(--text-muted);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="code-hl">^^^^^^ ASP番号 → 旧方式</span><br>
+      <br>
+      <span class="code-old">新: TM1-2_加藤_TCB-脂肪溶解_通常LP_FB_</span><span class="code-new">AXAD01</span><span class="code-old">_0112_記事002_...</span><br>
+      <span style="color: var(--text-muted);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="code-new">^^^^^^ AXAD → 新方式（CATS）</span>
+    </div>
+
+    <div class="callout green">
+      <strong>覚え方</strong>
+      キャンペーン名に「AXAD」が入っていれば → CATS（新方式）<br>
+      入っていなければ → 旧方式（ASPリンク）<br><br>
+      全てのリンクがCATS連携できるわけではない（ASP側の対応状況による）ので、当面は新旧が混在する。
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ==================== PART 5 ==================== -->
+<section id="part5">
+  <div class="section-header">
+    <div class="section-num">Part 05 / 6min</div>
+    <h2>最初の出稿でやること</h2>
+    <p class="goal">自分で手を動かすイメージが湧く</p>
+  </div>
+
+  <div class="callout blue">
+    <strong>なぜ最初は自分でやるのか</strong>
+    管理画面の構造を体で覚える。設定項目の意味を実感する。<br>通常の依頼フローは後から覚えれば十分。
+  </div>
+
+  <div class="card">
+    <h3>出稿の実務ステップ</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">CRを用意する</div>
+          <div class="step-desc">Googleドライブから素材をダウンロード</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">媒体の管理画面にログイン</div>
+          <div class="step-desc">Meta広告マネージャー、TikTok Ads Manager など</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">キャンペーンを作成</div>
+          <div class="step-desc">キャンペーン名、1日の予算を設定</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">広告セットを作成</div>
+          <div class="step-desc">ターゲティング（年齢・性別・地域）、ピクセルを設定</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">広告を作成</div>
+          <div class="step-desc">素材アップロード、テキスト入力、遷移先URL設定</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <div class="step-title">設定内容を確認 → 公開</div>
+          <div class="step-desc">全項目を見直してから配信開始</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>最初のうちの心構え</h3>
+    <div class="key-points">
+      <div class="key-point">
+        <h4>速さより正確さ</h4>
+        <p>慣れれば勝手に速くなる。焦らなくて大丈夫。</p>
+      </div>
+      <div class="key-point green-border">
+        <h4>不明点はそのままにしない</h4>
+        <p>「なんとなくこうだろう」で設定すると、間違った配信 = 広告費の損失になる。聞く相手はいくらでもいる。</p>
+      </div>
+      <div class="key-point blue-border">
+        <h4>間違えても責められない</h4>
+        <p>責任は依頼した運用者にある。でもだからこそ、不明点は事前に確認する。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ==================== PART 6 ==================== -->
+<section id="part6">
+  <div class="section-header">
+    <div class="section-num">Part 06 / 7min</div>
+    <h2>トッププレイヤーの共通点</h2>
+    <p class="goal">「管理画面を見る = 運用者の武器」という価値観のインストール</p>
+  </div>
+
+  <div class="card">
+    <h3>利益を出している運用者は全員、管理画面をめちゃめちゃ見ている</h3>
+    <div class="key-points">
+      <div class="key-point">
+        <h4>数値の違和感に気づく</h4>
+        <p>何かおかしいと感じたら、すぐに設定を確認しに行く。</p>
+      </div>
+      <div class="key-point green-border">
+        <h4>導線の設定ミスを確認する</h4>
+        <p>遷移先URL、ターゲティング、ピクセル。設定ミスがないか自分の目で見る。</p>
+      </div>
+      <div class="key-point blue-border">
+        <h4>媒体のアップデートに気づく</h4>
+        <p>管理画面は頻繁に変わる。日常的に見ている人だけが変化に気づける。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>アプリやシートの数値を100%信用しない</h3>
+    <div class="callout">
+      <strong>開発側は100%信用できるものを目指して作っている。</strong>
+      でも予期せぬエラーは起きる。<br><br>
+      何かあった時に自分で対処できるか。<br>
+      それは<strong>出稿をどれだけ理解しているかに直結する</strong>。<br><br>
+      「数字がおかしい」→ 管理画面で実際の設定を確認 → 原因特定 → 対処。<br>
+      この動きができるかどうか。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>AI時代に生き残る運用者</h3>
+    <div class="callout yellow">
+      <strong>この先AIの発展が進むと、CR制作「だけ」できる人は奪われる。</strong>
+    </div>
+    <p>差がつくのは<strong>導線全体を意識した設計力</strong>。</p>
+    <ul style="list-style:none; padding:0; margin:1rem 0;">
+      <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative;"><span style="position:absolute; left:0; color:var(--green);">&#10003;</span> CR・記事・LPまで含めてトータルでCPAを下げに行く動き</li>
+      <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative;"><span style="position:absolute; left:0; color:var(--green);">&#10003;</span> 媒体を理解すれば、CV計測の仕組みも自然と理解できるようになる</li>
+      <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative;"><span style="position:absolute; left:0; color:var(--green);">&#10003;</span> 出稿は「作業」じゃない。媒体を理解するための最良の入り口</li>
+    </ul>
+
+    <div class="callout green">
+      <strong>ここを深く理解している人が、結果的にトッププレイヤーになっている。</strong>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ==================== PART 7 ==================== -->
+<section id="part7">
+  <div class="section-header">
+    <div class="section-num">Part 07 / 2min</div>
+    <h2>まとめ</h2>
+  </div>
+
+  <div class="takeaway">
+    <h3>今日覚えて帰ること</h3>
+    <ul class="takeaway-list">
+      <li>導線全体を意識する（CR → 記事 → LP → CV）</li>
+      <li>出稿 = 媒体を理解する入り口。正確にやる</li>
+      <li>管理画面を自分の目で見る習慣が、対処力になる</li>
+    </ul>
+  </div>
+
+  <div class="card" style="text-align: center;">
+    <h3>次のステップ</h3>
+    <p style="font-size:1.1rem; margin: 1rem 0;">実際に出稿を自分の手でやってみる</p>
+    <p style="color: var(--text-muted);">わからないことは何でも聞く。聞く相手はいくらでもいる。</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ==================== QUIZ ==================== -->
+<section id="quiz">
+  <div class="section-header">
+    <div class="section-num">Appendix 01</div>
+    <h2>CPA計算問題</h2>
+    <p class="goal">導線の指標を使って、CPAや利益を計算できるようになる</p>
+  </div>
+
+  <div class="card">
+    <h3>基本公式</h3>
+    <div class="code-block" style="font-size: 1.1rem; text-align: center;">
+      CPA = CPC &divide; (MCVR &times; CVR)
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted);">CPC（1クリックのコスト）を、クリックからCVに至る確率（MCVR × CVR）で割ると、1CV獲得にかかるコスト（CPA）が出る。</p>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q" onclick="this.nextElementSibling.classList.toggle('show')">
+      <span class="quiz-num">Q1</span>
+      <span class="quiz-text">CPC 200円、MCVR 10%、CVR 10%。CPAはいくら？</span>
+      <span class="quiz-toggle">解答を見る</span>
+    </div>
+    <div class="quiz-a">
+      <div class="quiz-answer">CPA = 20,000円</div>
+      <div class="quiz-formula">
+        CPA = 200 &divide; (0.1 &times; 0.1) = 200 &divide; 0.01 = 20,000円
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q" onclick="this.nextElementSibling.classList.toggle('show')">
+      <span class="quiz-num">Q2</span>
+      <span class="quiz-text">CPA 10,000円で獲得したい。MCVR 20%、CVR 10%。CPCはいくらで取る必要がある？</span>
+      <span class="quiz-toggle">解答を見る</span>
+    </div>
+    <div class="quiz-a">
+      <div class="quiz-answer">CPC = 200円</div>
+      <div class="quiz-formula">
+        CPC = CPA &times; MCVR &times; CVR = 10,000 &times; 0.2 &times; 0.1 = 200円
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q" onclick="this.nextElementSibling.classList.toggle('show')">
+      <span class="quiz-num">Q3</span>
+      <span class="quiz-text">単価 15,000円の案件。CPC 100円、MCVR 20%、CVR 10%。黒字？赤字？</span>
+      <span class="quiz-toggle">解答を見る</span>
+    </div>
+    <div class="quiz-a">
+      <div class="quiz-answer">黒字（+10,000円 / CV）</div>
+      <div class="quiz-formula">
+        CPA = 100 &divide; (0.2 &times; 0.1) = 100 &divide; 0.02 = 5,000円<br>
+        利益 = 15,000 - 5,000 = +10,000円
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q" onclick="this.nextElementSibling.classList.toggle('show')">
+      <span class="quiz-num">Q4</span>
+      <span class="quiz-text">2つのキャンペーン、どちらが利益効率が良い？（単価は両方 20,000円）</span>
+      <span class="quiz-toggle">解答を見る</span>
+    </div>
+    <div class="quiz-a">
+      <table class="quiz-compare">
+        <thead><tr><th></th><th>CP-A</th><th>CP-B</th></tr></thead>
+        <tbody>
+          <tr><td>CPC</td><td>300円</td><td>100円</td></tr>
+          <tr><td>MCVR</td><td>20%</td><td>10%</td></tr>
+          <tr><td>CVR</td><td>20%</td><td>10%</td></tr>
+          <tr><td>CPA</td><td class="winner">7,500円</td><td class="loser">10,000円</td></tr>
+          <tr><td>利益/CV</td><td class="winner">12,500円</td><td class="loser">10,000円</td></tr>
+        </tbody>
+      </table>
+      <div class="quiz-formula">
+        CP-A: 300 &divide; (0.2 &times; 0.2) = 300 &divide; 0.04 = 7,500円<br>
+        CP-B: 100 &divide; (0.1 &times; 0.1) = 100 &divide; 0.01 = 10,000円
+      </div>
+      <div class="quiz-explain">
+        <strong style="color: var(--green);">CPCが3倍高いCP-Aの方が利益が出る。</strong><br>
+        CPCだけ見ても判断できない。導線全体（MCVR・CVR）で見ることが重要。
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-card">
+    <div class="quiz-q" onclick="this.nextElementSibling.classList.toggle('show')">
+      <span class="quiz-num">Q5</span>
+      <span class="quiz-text">単価 20,000円。CPC 200円、MCVR 10%、CVR 10%（トントン）。MCVRを20%に改善したら利益は？</span>
+      <span class="quiz-toggle">解答を見る</span>
+    </div>
+    <div class="quiz-a">
+      <div class="quiz-answer">利益 +10,000円 / CV</div>
+      <div class="quiz-formula">
+        現状: CPA = 200 &divide; (0.1 &times; 0.1) = 20,000円（トントン）<br>
+        改善後: CPA = 200 &divide; (0.2 &times; 0.1) = 10,000円<br>
+        利益 = 20,000 - 10,000 = +10,000円
+      </div>
+      <div class="quiz-explain">
+        <strong style="color: var(--green);">MCVRが10%→20%に上がるだけで、トントンから1万円の黒字に。</strong><br>
+        記事の改善（MCVR向上）が利益に直結する例。導線の一つを改善するだけで結果が大きく変わる。
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ==================== GLOSSARY ==================== -->
+<section id="glossary">
+  <div class="section-header">
+    <div class="section-num">Appendix 02</div>
+    <h2>社内共通言語 単語一覧</h2>
+    <p class="goal">社内で飛び交う用語の意味がわかるようになる</p>
+  </div>
+
+  <div class="card">
+    <div class="glossary-category">
+      <h3>ビジネス</h3>
+      <div class="glossary-item"><span class="glossary-term">ASP</span><span class="glossary-def">クライアントと代理店を仲介するプラットフォーム</span></div>
+      <div class="glossary-item"><span class="glossary-term">商流</span><span class="glossary-def">案件の流通経路（ナハト商流 / アクシス商流）</span></div>
+      <div class="glossary-item"><span class="glossary-term">単価</span><span class="glossary-def">1CV あたりの成果報酬額</span></div>
+      <div class="glossary-item"><span class="glossary-term">キャップ</span><span class="glossary-def">月間の獲得上限件数</span></div>
+      <div class="glossary-item"><span class="glossary-term">直クラ</span><span class="glossary-def">ASPを挟まずクライアントと直接取引すること</span></div>
+    </div>
+
+    <div class="glossary-category">
+      <h3>媒体</h3>
+      <div class="glossary-item"><span class="glossary-term">BM</span><span class="glossary-def">ビジネスマネージャー（Metaの親アカウント）</span></div>
+      <div class="glossary-item"><span class="glossary-term">広告アカウント</span><span class="glossary-def">媒体上の配信管理単位。案件ごとに分かれる</span></div>
+      <div class="glossary-item"><span class="glossary-term">ピクセル</span><span class="glossary-def">CV計測用のタグ。媒体に「誰がCVしたか」を伝える仕組み</span></div>
+      <div class="glossary-item"><span class="glossary-term">BAN</span><span class="glossary-def">アカウント停止。規約違反等で媒体側から停止される</span></div>
+    </div>
+
+    <div class="glossary-category">
+      <h3>指標</h3>
+      <div class="glossary-item"><span class="glossary-term">CPA</span><span class="glossary-def">1件獲得あたりの広告費（Cost Per Acquisition）</span></div>
+      <div class="glossary-item"><span class="glossary-term">ROAS</span><span class="glossary-def">広告費に対する売上の割合（Return On Ad Spend）</span></div>
+      <div class="glossary-item"><span class="glossary-term">CTR</span><span class="glossary-def">広告を見た人のうちクリックした割合（Click Through Rate）</span></div>
+      <div class="glossary-item"><span class="glossary-term">CVR</span><span class="glossary-def">LPに来た人のうちCVした割合（Conversion Rate）</span></div>
+      <div class="glossary-item"><span class="glossary-term">MCVR</span><span class="glossary-def">記事からLPに遷移した割合（Micro Conversion Rate）</span></div>
+      <div class="glossary-item"><span class="glossary-term">CPC</span><span class="glossary-def">1クリックあたりの広告費（Cost Per Click）</span></div>
+      <div class="glossary-item"><span class="glossary-term">CPM</span><span class="glossary-def">1,000回表示あたりの広告費（Cost Per Mille）</span></div>
+    </div>
+
+    <div class="glossary-category">
+      <h3>導線</h3>
+      <div class="glossary-item"><span class="glossary-term">CR</span><span class="glossary-def">クリエイティブ。媒体に配信する広告素材（動画・静止画）</span></div>
+      <div class="glossary-item"><span class="glossary-term">記事LP</span><span class="glossary-def">自社で作る教育用ページ。商品の魅力を記事風に伝える</span></div>
+      <div class="glossary-item"><span class="glossary-term">本LP</span><span class="glossary-def">クライアントの公式ページ。基本いじれない</span></div>
+      <div class="glossary-item"><span class="glossary-term">サンクスページ</span><span class="glossary-def">予約完了ページ。ここに到達 = CV発生</span></div>
+      <div class="glossary-item"><span class="glossary-term">アフィリンク</span><span class="glossary-def">成果計測用のURL。ASPが発行する</span></div>
+      <div class="glossary-item"><span class="glossary-term">CV</span><span class="glossary-def">コンバージョン。成果が発生すること（予約完了など）</span></div>
+      <div class="glossary-item"><span class="glossary-term">MCV</span><span class="glossary-def">マイクロコンバージョン。CVの手前の中間成果</span></div>
+    </div>
+
+    <div class="glossary-category">
+      <h3>構造</h3>
+      <div class="glossary-item"><span class="glossary-term">キャンペーン</span><span class="glossary-def">広告の最上位の箱。予算・目的を設定する</span></div>
+      <div class="glossary-item"><span class="glossary-term">広告セット</span><span class="glossary-def">ターゲティング（年齢・性別・地域）を設定する単位</span></div>
+      <div class="glossary-item"><span class="glossary-term">広告</span><span class="glossary-def">実際に配信するCRと遷移先を設定する単位</span></div>
+      <div class="glossary-item"><span class="glossary-term">オーディエンス</span><span class="glossary-def">配信対象のユーザー群</span></div>
+    </div>
+
+    <div class="glossary-category">
+      <h3>業務</h3>
+      <div class="glossary-item"><span class="glossary-term">精査</span><span class="glossary-def">前日の配信結果を確認し、停止/継続を判断する朝の業務</span></div>
+      <div class="glossary-item"><span class="glossary-term">出稿</span><span class="glossary-def">媒体管理画面で広告配信を設定する業務</span></div>
+      <div class="glossary-item"><span class="glossary-term">横展開</span><span class="glossary-def">勝ちCRを別媒体や別ターゲットに展開すること</span></div>
+      <div class="glossary-item"><span class="glossary-term">つなぎこみ</span><span class="glossary-def">案件決定後の技術セットアップ全般（リンク発行・アカウント開設・タグ設置）</span></div>
+    </div>
+
+    <div class="glossary-category">
+      <h3>計測</h3>
+      <div class="glossary-item"><span class="glossary-term">CATS</span><span class="glossary-def">第三者計測ツール。CPID/ADIDで成果をキャンペーンに紐づける</span></div>
+      <div class="glossary-item"><span class="glossary-term">AXAD</span><span class="glossary-def">CATS方式のキャンペーンに付く識別子。CP名にこれがあればCATS</span></div>
+      <div class="glossary-item"><span class="glossary-term">CPID / ADID</span><span class="glossary-def">媒体が自動発行するキャンペーンID / 広告ID</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  AXIS-Ads Onboarding 2026
+</footer>
+
+</body>
+</html>
